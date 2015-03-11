@@ -1,0 +1,22 @@
+{
+  "name": "caffe-model-editor",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Simon-Hohberg/caffe-model-editor",
+  "authors": [
+    "Simon Hohberg <simhoh@gmx.de>"
+  ],
+  "description": "Web based editor for models of Berkeley's Caffe deep learning framework",
+  "main": "caffe-editor.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.5"
+  }
+}
