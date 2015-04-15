@@ -1,4 +1,5 @@
 function CaffeNet(protobuf) {
+  this.proto = protobuf;
   this.roots = [];
   
   // maps IDs to layer objects

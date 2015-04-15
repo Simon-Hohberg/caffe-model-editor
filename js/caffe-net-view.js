@@ -1,4 +1,6 @@
 function CaffeNetView(net, width) {
+  this.startX = 0;
+  this.startY = 20;
   this.colMargin = 20;
   this.rowMargin = 20;
   this.colWidth = 200;
@@ -13,6 +15,13 @@ function CaffeNetView(net, width) {
 }
 
 CaffeNetView.prototype.draw = function(paper) {
+  // draw name
+  var netNameText = paper.text(5, 15, this.net.proto.message.name);
+  netNameText.attr({
+    "fill": "#000000", 
+    "text-anchor": "start", 
+    "font-size": "20px"
+  });
   // find longest path for required number of "rows" of layers
   var longestPath = [];
   // queue of paths
@@ -92,14 +101,14 @@ CaffeNetView.prototype.draw = function(paper) {
   for(var row = 0; row < graphTable.length; row++) {
     var curNumCols = graphTable[row].length;
     var rowMaxHeight = 0;
-    var rowStartY = sum(rowHeights) + (rowHeights.length + 1) * self.rowMargin;
+    var rowStartY = sum(rowHeights) + (rowHeights.length + 1) * this.rowMargin + this.startY;
     for(var col = 0; col < curNumCols; col++) {
       var layerView = this.layerViews[graphTable[row][col]];
       var currLayerHeight = layerView.height;
       if (currLayerHeight > rowMaxHeight) {
         rowMaxHeight = currLayerHeight;
       }
-      var rowStart = (((numCols - curNumCols) * (this.colWidth + this.colMargin)) / 2) + this.colMargin;
+      var rowStart = (((numCols - curNumCols) * (this.colWidth + this.colMargin)) / 2) + this.colMargin + this.startX;
       layerView.draw(paper, rowStart + (this.colWidth + this.colMargin) * col, rowStartY);
     }
     rowHeights[row] = rowMaxHeight;

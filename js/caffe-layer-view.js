@@ -14,7 +14,7 @@ CaffeLayerView.prototype.draw = function(paper, posX, posY) {
   var viewSet = paper.set();
   // basic layer shape
   var rect = paper.rect(0, 0, this.width, this.height, 5);
-  rect.attr({fill: LayerColors[LayerEnum[this.layer.proto.type]]});
+  rect.attr({ fill: LayerColors[LayerEnum[this.layer.proto.type]], "stroke-width": 0 });
   viewSet.push(rect);
   // layer name
   var layerNameText = paper.text(6, 12, this.layer.proto.name);
