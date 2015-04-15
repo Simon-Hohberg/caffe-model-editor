@@ -1,4 +1,4 @@
-var builder = ProtoBuf.loadProtoFile('./proto/caffe.proto')
+var builder = ProtoBuf.loadProtoFile('proto/caffe.proto')
 
 //var input = require('fs').readFileSync('./proto/lenet.prototxt', 'utf-8');
 
@@ -6,7 +6,7 @@ var builder = ProtoBuf.loadProtoFile('./proto/caffe.proto')
 //var result = TextFormat.parse(builder, 'caffe.NetParameter', input);
 
 var svgWidth = 600;
-var svgHeight = 1200;
+var svgHeight = 2000;
 var netPrototxt = $("#net-prototxt")
 var raphael = Raphael("svg-container", '100%', '100%');
 raphael.setViewBox(0, 0, svgWidth, svgHeight, true);
@@ -16,7 +16,7 @@ var netView;
 
 // load example
 $.ajax({
-     url : "proto/lenet_train_test.prototxt",
+     url : "proto/caffenet.prototxt",
      dataType: "text",
      success : function (content) {
          netPrototxt.text(content);

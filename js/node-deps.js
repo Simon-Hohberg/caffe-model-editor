@@ -7,14 +7,18 @@ function buildMessageFromAST(message, ast) {
   ast.map(function(entry) {
     var value;
     var field = message.$type.getChild(entry.name)
+    
     if (entry.type === 'pair') {
       value = entry.value;
     } else if (entry.type === 'message') {
+      if (field === null) {
+        console.log("damn!");
+      }
       var ChildMessageClass = field.resolvedType.build();
       var value = new ChildMessageClass();
       buildMessageFromAST(value, entry.values);
     }
-
+    
     if (field.repeated) {
       message.add(entry.name, value);
     } else {
