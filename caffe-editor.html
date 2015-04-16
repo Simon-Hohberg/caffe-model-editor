@@ -9,12 +9,16 @@
     <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
     <!-- 2. Load the component using an HTML Import -->
 <!--    <link rel="import" href="elements/my-element.html">-->
+    <link rel="stylesheet" type="text/css" href="css/editor.css" />
   </head>
   <body>
     <h1>Caffe Editor</h1>
-    <div id="svg-container" style="border: 1px solid; margin: 0 2% 1em 0; float: left; width: 48%;"></div>
-    <div style="width: 48%; float: left;">
-      <textarea style="margin-left: auto; margin-right: auto; display: block"id="net-prototxt" rows="50" cols="80"></textarea>
+    <div id="editor" class="editor-container">
+      <!-- order of divs matters here -->
+      <div class="net-prototxt-container">
+        <textarea id="net-prototxt" style="margin-left: auto; margin-right: auto; display: block" rows="50" cols="80"></textarea>
+      </div>
+      <div id="svg-container" class="net-view-container"></div>
     </div>
     <script src="js/math.js"></script>
     <script src="js/node-deps.js"></script>

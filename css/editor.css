@@ -1,0 +1,20 @@
+.editor-container {
+  width: 90%;
+  height: 100%;
+  padding-left: 10%;
+}
+
+.net-view-container {
+  width: auto;
+  height: 100%;
+  overflow: scroll;
+  border: 1px solid;
+  display: block;
+}
+
+.net-prototxt-container {
+  height: 100%;
+  float: right;
+  border: 1px solid;
+  display: block;
+}

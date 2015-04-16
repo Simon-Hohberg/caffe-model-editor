@@ -1,20 +1,19 @@
-function CaffeLayerView(layer, width) {
+function CaffeLayerView(layer) {
   this.layer = layer;
-  this.width = width;
   this.inplaceDistV = 5;
   // increase height for inplace layers + some margin
   this.height = 40 + layer.inplace.length * (40 + this.inplaceDistV);
   this.inplaceLayerViews = [];
   for (var i = 0; i < this.layer.inplace.length; i++) {
     var inplaceLayer = this.layer.inplace[i];
-    this.inplaceLayerViews.push(new CaffeLayerView(inplaceLayer, width - 10));
+    this.inplaceLayerViews.push(new CaffeLayerView(inplaceLayer));
   }
 }
 
-CaffeLayerView.prototype.draw = function(paper, posX, posY) {
+CaffeLayerView.prototype.draw = function(paper, posX, posY, width) {
   var viewSet = paper.set();
   // basic layer shape
-  var rect = paper.rect(0, 0, this.width, this.height, 5);
+  var rect = paper.rect(0, 0, width, this.height, 5);
   rect.attr({ fill: LayerColors[LayerEnum[this.layer.proto.type]], "stroke-width": 0 });
   viewSet.push(rect);
   // layer name
@@ -29,7 +28,9 @@ CaffeLayerView.prototype.draw = function(paper, posX, posY) {
   var self = this;
   this.inplaceLayerViews.forEach(function(inplaceLayerView) {
     i++;
-    inplaceLayerView.draw(paper, posX + 5, posY + (i * 40) + (i-1) * self.inplaceDistV);
+    var widthDiff = Math.round(width * 0.05);
+    var inplaceWidth = width - widthDiff;
+    inplaceLayerView.draw(paper, posX + Math.round(widthDiff*0.5), posY + (i * 40) + (i-1) * self.inplaceDistV, inplaceWidth);
   });
   viewSet.translate(posX, posY);
 };

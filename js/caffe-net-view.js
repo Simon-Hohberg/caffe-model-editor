@@ -1,20 +1,22 @@
-function CaffeNetView(net, width) {
+function CaffeNetView(net) {
+  this.width = 0;
+  this.height = 0;
   this.startX = 0;
   this.startY = 20;
-  this.colMargin = 20;
+  this.relativeColMargin = 0.2;
   this.rowMargin = 20;
-  this.colWidth = 200;
   this.rowHeight = 40;
-  this.width = width;
   this.net = net;
   this.layerViews = {};
   var self = this;
   this.net.layers.forEach(function(layer) {
-    self.layerViews[layer] = new CaffeLayerView(layer, self.colWidth);
+    self.layerViews[layer] = new CaffeLayerView(layer);
   });
 }
 
-CaffeNetView.prototype.draw = function(paper) {
+CaffeNetView.prototype.draw = function(paper, width, height) {
+  // clear canvas (actually svg of course)
+  $(paper.canvas).empty()
   // draw name
   var netNameText = paper.text(5, 15, this.net.proto.message.name);
   netNameText.attr({
@@ -97,6 +99,13 @@ CaffeNetView.prototype.draw = function(paper) {
     });
   }
   
+  // determine width, height and margin for layers
+  
+  // fit width
+  var colMargin = Math.round(width/ (numCols + 1) * this.relativeColMargin);
+  var colWidth = Math.round((width - colMargin * (numCols + 1)) / numCols);
+  this.width = width;
+  
   var rowHeights = [];
   for(var row = 0; row < graphTable.length; row++) {
     var curNumCols = graphTable[row].length;
@@ -108,11 +117,13 @@ CaffeNetView.prototype.draw = function(paper) {
       if (currLayerHeight > rowMaxHeight) {
         rowMaxHeight = currLayerHeight;
       }
-      var rowStart = (((numCols - curNumCols) * (this.colWidth + this.colMargin)) / 2) + this.colMargin + this.startX;
-      layerView.draw(paper, rowStart + (this.colWidth + this.colMargin) * col, rowStartY);
+      var rowStart = (((numCols - curNumCols) * (colWidth + colMargin)) / 2) + colMargin + this.startX;
+      layerView.draw(paper, rowStart + (colWidth + colMargin) * col, rowStartY, colWidth);
     }
     rowHeights[row] = rowMaxHeight;
   }
+  
+  this.height = sum(rowHeights) + (rowHeights.length + 1) * this.rowMargin + this.startY;
 };
 
 var LayerEnum = {
