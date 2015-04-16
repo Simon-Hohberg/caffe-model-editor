@@ -5,10 +5,10 @@ var builder = ProtoBuf.loadProtoFile('proto/caffe.proto')
 ///* Parse the schema into a ProtoBuf.js messsage object. */
 //var result = TextFormat.parse(builder, 'caffe.NetParameter', input);
 
-var netPrototxtHeight = $("#net-prototxt").height()
+var netPrototxt = $("#net-prototxt");
+var netPrototxtHeight = netPrototxt.height()
 var svgWidth = $("#svg-container").width();
 var svgHeight = netPrototxtHeight;
-var netPrototxt = $("#net-prototxt");
 var raphael = Raphael("svg-container", svgWidth, svgHeight);
 $("#svg-container").height(svgHeight);
 raphael.setViewBox(0, 0, svgWidth, svgHeight, false);
@@ -18,21 +18,22 @@ var netView;
 
 function redraw() {
   svgWidth = $("#svg-container").width();
-  svgHeight = $("#net-prototxt").height();
+  svgHeight = netPrototxt.height();
   netView.draw(raphael, svgWidth, svgHeight);
-  raphael.setViewBox(0, 0, svgWidth, svgHeight, false);
+  raphael.setViewBox(0, 0, netView.width, netView.height, false);
   raphael.canvas.setAttribute("height", netView.height);
   raphael.canvas.setAttribute("width", netView.width);
 }
 
-function afterResize() {
+// on resize event handler
+function windowResized() {
   redraw();
 }
 
 var resizeTimer;
 $(window).resize(function () {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(afterResize, 100);
+  resizeTimer = setTimeout(windowResized, 100);
 });
 
 // load example
@@ -41,15 +42,20 @@ $.ajax({
   dataType: "text",
   success : function (content) {
     netPrototxt.text(content);
-    textChanged(content);
+    textChanged();
   }
 });
  
-// register event handler
+// on text change event handler
+var textChangeTimer;
+netPrototxt.bind('input propertychange', function() {
+  clearTimeout(textChangeTimer);
+  textChangeTimer = setTimeout(textChanged, 100);
+});
 
 
-
-function textChanged(content) {
+function textChanged() {
+  var content = netPrototxt.val()
   var result = TextFormat.parse(builder, 'caffe.NetParameter', content)
   if (!result.status) {
     console.error(result.error);
